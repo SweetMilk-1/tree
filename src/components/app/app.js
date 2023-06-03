@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 
 import TreeView from "../tree-view";
-import ItemCreateEdit from "../item-create-edit";
 import Button from "../button";
+import ItemCreateEdit from "../item-create-edit";
+import List from "../list"
 
 import { Add, Edit, Delete } from "@mui/icons-material";
-import Modal from "@mui/material/Modal";
 
 import { withDatabase } from "../hoc";
+import useModal from "../../hooks";
 
 const App = ({ dbContext }) => {
   const [tree, setTree] = useState();
-  const [selectedNode, setSeledtedNode] = useState();
+  const [selectedNode, setSeledtedNode] = useState(null);
 
+  const [modal, handleOpen] = useModal(List, tree);
   /**
    * Загружает данные и после загрузки сохраняет в локальный стэйт
    */
@@ -31,14 +33,20 @@ const App = ({ dbContext }) => {
     <>
       <div className="container">
         <div className="left-column">
-          <TreeView tree={tree} onItemClick={handleItemClick} />
+          <TreeView data={tree} onItemClick={handleItemClick} />
         </div>
         <div className="right-column">
-          <Button label="Добавить" icon={<Add />} />
-          <Button label="Изменить" icon={<Edit />} />
-          <Button label="Удалить" icon={<Delete />} />
+          <Button
+            label="Добавить"
+            icon={<Add />}
+            onClick={handleOpen}
+            isDisabled={!selectedNode}
+          />
+          {/* <Button label="Изменить" icon={<Edit />} />
+          <Button label="Удалить" icon={<Delete />} /> */}
         </div>
       </div>
+      {modal}
     </>
   );
 };
