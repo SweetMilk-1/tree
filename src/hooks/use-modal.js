@@ -2,6 +2,7 @@ import * as React from "react";
 
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 import Button from "../components/button";
 
@@ -17,7 +18,7 @@ const style = {
   p: 4,
 };
 
-const useModal = (Component, objData, handleSubmit) => {
+const useModal = (Component, objData, label, handleSubmit) => {
   const [open, setOpen] = React.useState(false);
   const [data, setData] = React.useState(null);
 
@@ -33,8 +34,16 @@ const useModal = (Component, objData, handleSubmit) => {
   };
 
   const modal = (
-    <Modal open={open} onClose={handleClose}>
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+    >
       <Box sx={style}>
+        <Typography id="modal-modal-title" variant="h6" component="h2">
+          {label}
+        </Typography>
+
         {Component && <Component data={data} onChange={handleChange} />}
 
         {handleSubmit && (
